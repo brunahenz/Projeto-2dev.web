@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue'
-const produtos = [
+const produtos = ref([
   {
     id: 1,
     nome: 'Camiseta',
@@ -70,8 +70,12 @@ const produtos = [
     quantidade: 1
 
   }
-]
+])
 const novoProduto = ref('')
+ 
+function incrementar(index) {
+    listaCompras.value[index].quantidade++
+  }
 function adicionar() {
   produtos.value.push(novoProduto.value)
   novoProduto.value = ''
@@ -82,24 +86,42 @@ function remover(index) {
 </script>
 
 <template>
-  <div class="produtos" v-for="produto in produtos" :key="produtos.id">
-    <p>Id: {{ produto.id }}</p>
-    <p>Nome: {{ produto.nome }}</p>
-    <p>Preço: {{ produto.preco }}</p>
-    <p>Quantidade: {{ produto.quantidade }}</p>
-  </div>
-  <div class="adicionar">
-    <input type="text" v-model="novoProduto">
-    <button @click="adicionar">Adicionar</button>
-    <ul>
-      <li v-for="item in produtos">{{ item }}</li>
-    </ul>
-  </div>
-  <div class="remover">
-    <ul>
-      <li v-for="(item, index) in produtos">{{ item }} <button @click="remover(index)">Remover</button></li>
-    </ul>
+  <div class="listaProdutos">
+    <div class="produtos" v-for="produto in produtos" :key="produtos.id">
+      <p>Id: {{ produto.id }}</p>
+      <p>Nome: {{ produto.nome }}</p>
+      <p>Preço: {{ produto.preco }}</p>
+      <p>Quantidade: {{ produto.quantidade }}</p>
+      <div >
+        <button class="botoes" @click="adicionar(index)">Adicionar</button>
+        <button class="botoes" @click="incrementar(index)">+</button>
+        <button class="botoes" @click="remover(index)">-</button>
+      </div>
+    </div>
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.listaProdutos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 60%;
+  margin: 0 auto;
+  gap: 20px;
+}
+.produtos{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: rgb(46, 45, 141);
+  border-radius: 10px;
+  color: aliceblue;
+  background-image: linear-gradient(to right, rgb(15, 17, 129), black);
+}
+.botoes{
+  border-radius: 10px;
+  background-color: rgb(119, 28, 28);
+  color: white;
+
+}
+</style>
